@@ -15,13 +15,14 @@ public class ExcelTest {
   public static void main(String[] args) {
     ExcelReader reader = null;
     try (InputStream stream = ExcelTest.class.getResourceAsStream("/template.xlsx");) {
-      reader = EasyExcel.read(stream).build();
       ExcelValidListener<ExcelModel> validListener = new ExcelValidListener<>();
-      ReadSheet readSheet = EasyExcel.readSheet(0).registerReadListener(validListener).build();
+      reader = EasyExcel.read(stream).build();
+      ReadSheet readSheet = EasyExcel.readSheet(0).head(ExcelModel.class)
+          .registerReadListener(validListener).build();
       reader.read(readSheet);
-      log.error(validListener.getCheckErrorList().toString());
+      System.out.println(validListener.getCheckErrorList());
     } catch (IOException ex) {
-
+      System.out.println(ex.getMessage());
     } finally {
       if (reader != null) {
         reader.finish();
