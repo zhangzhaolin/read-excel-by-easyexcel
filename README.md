@@ -4,7 +4,8 @@
 
 基于：
 - 阿里巴巴 出版的 easyexcel
-- hibernate validation
+- hibernate validator
+- lombok
 
 如果 excel 验证有问题，需要将有问题的 Cell 标红，并导出该 excel。
 
