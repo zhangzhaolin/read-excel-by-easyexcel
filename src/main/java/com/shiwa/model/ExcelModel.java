@@ -2,11 +2,16 @@ package com.shiwa.model;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import java.util.Date;
+import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+/**
+ * @author zhangzhaolin
+ */
 @Data
 public class ExcelModel {
 
@@ -23,4 +28,22 @@ public class ExcelModel {
   @NotNull
   private Date date;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ExcelModel that = (ExcelModel) o;
+    return Objects.equals(str1, that.str1) &&
+        Objects.equals(str2, that.str2) &&
+        Objects.equals(date, that.date);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(str1, str2, date);
+  }
 }

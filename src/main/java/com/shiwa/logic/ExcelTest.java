@@ -9,7 +9,6 @@ import com.shiwa.listener.ExcelValidReadListener;
 import com.shiwa.listener.ExcelValidWriteListener;
 import com.shiwa.model.ExcelCheckError;
 import com.shiwa.model.ExcelModel;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +21,7 @@ public class ExcelTest {
   public static void main(String[] args) {
     ExcelReader reader = null;
     ExcelWriter writer = null;
-    try (InputStream inputStream = ExcelTest.class.getResourceAsStream("/template.xlsx");) {
+    try (InputStream inputStream = ExcelTest.class.getResourceAsStream("/template.xlsx")) {
       ExcelValidReadListener<ExcelModel> readListener = new ExcelValidReadListener<>();
       reader = EasyExcel.read(inputStream).build();
       ReadSheet readSheet = EasyExcel.readSheet(0).head(ExcelModel.class)
@@ -33,20 +32,19 @@ public class ExcelTest {
       if (errorList.size() > 0) {
         // 输出
         ExcelValidWriteListener writeListener = new ExcelValidWriteListener();
+        // ByteArrayOutputStream excelArrayOutputStream = new ByteArrayOutputStream();
+        FileOutputStream excelArrayOutputStream = new FileOutputStream("/output.xlsx");
         writeListener.setErrorList(errorList);
+
         writer = EasyExcel
-            .write()
+            .write(excelArrayOutputStream)
             .withTemplate(ExcelTest.class.getResourceAsStream("/template.xlsx")).build();
+
         WriteSheet writeSheet = EasyExcel.writerSheet(0)
             .registerWriteHandler(writeListener)
             .build();
+
         writer.write(null, writeSheet);
-        // 生成 excel 文件
-        // 这里放到 Spring 或者 Spring Boot 里面可以返回一个 ByteArrayOutputStream 流
-        FileOutputStream fileOutputStream = new FileOutputStream("/output.xlsx");
-        fileOutputStream.write(writeListener.getOutput());
-        fileOutputStream.close();
-        writeListener.setOutput(null);
       }
     } catch (IOException ex) {
       ex.printStackTrace();

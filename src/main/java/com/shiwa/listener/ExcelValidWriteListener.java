@@ -5,8 +5,6 @@ import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.shiwa.model.ExcelCheckError;
 import com.shiwa.util.CellStyleUtil;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import java.io.IOException;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,6 +46,7 @@ public class ExcelValidWriteListener extends AbstractSheetWriteHandler {
               CellStyleUtil.createBackGroundColorByCell(workbook, cell, IndexedColors.RED));
         });
       }
+      CellUtil.getCell(row, row.getPhysicalNumberOfCells()).setCellValue(error.getErrorMessage());
     });
   }
 }

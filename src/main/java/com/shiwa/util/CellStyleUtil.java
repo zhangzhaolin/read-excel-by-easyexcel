@@ -20,9 +20,7 @@ public class CellStyleUtil {
   public static CellStyle createBackGroundColorByCell(Workbook workbook, Cell cell,
       IndexedColors colors) {
     CellStyle result = workbook.createCellStyle();
-    Row row = workbook.getSheetAt(0).getRow(0);
-
-    result.cloneStyleFrom(workbook.getCellStyleAt(cell.getColumnIndex()));
+    result.cloneStyleFrom(cell.getCellStyle());
     result.setFillForegroundColor(colors.index);
     result.setFillPattern(FillPatternType.SOLID_FOREGROUND);
     return result;
